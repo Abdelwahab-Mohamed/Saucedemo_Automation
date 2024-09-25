@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -30,7 +31,11 @@ public class Main {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 
     }
-
+@AfterMethod
+void close() throws InterruptedException {
+        Thread.sleep(3000);
+        driver.quit();
+}
     @Test
         // Valid Ceredentials Scenario
     void LoginTC_1() {
