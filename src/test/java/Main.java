@@ -16,42 +16,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    static   ChromeDriver driver;
+    static ChromeDriver driver;
     loginloc logloc = new loginloc();
     cart cartloc = new cart();
     products prodloc = new products();
     LogOut signout = new LogOut();
 
     @BeforeMethod
-    void setUp()
-    {
+    void setUp() {
 
-        driver= new ChromeDriver();
+        driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 
     }
+
     @Test
-    // Valid Ceredentials Scenario
-    void LoginTC_1()
-    {
+        // Valid Ceredentials Scenario
+    void LoginTC_1() {
         driver.get("https://www.saucedemo.com/");
 
         logloc.username().sendKeys("standard_user");
         logloc.Password().sendKeys("secret_sauce");
         logloc.button().click();
-        WebDriverWait expWait = new WebDriverWait(driver , Duration.ofSeconds(5));
+        WebDriverWait expWait = new WebDriverWait(driver, Duration.ofSeconds(5));
         expWait.until(ExpectedConditions.visibilityOfElementLocated(By.className("shopping_cart_link")));
-       // WebElement t = driver.findElement(By.className("shopping_cart_link"));
+        // WebElement t = driver.findElement(By.className("shopping_cart_link"));
 
 
         Assert.assertTrue(driver.findElement(By.className("shopping_cart_link")).isDisplayed());
 
     }
+
     @Test
-    // Invalid Credentials scenario
-    void LoginTC_2()
-    {
+        // Invalid Credentials scenario
+    void LoginTC_2() {
         driver.get("https://www.saucedemo.com/");
 
 
@@ -65,8 +64,8 @@ public class Main {
     }
 
     @Test
-    // Validate that appropiate error message displayed
-    void LoginTC_3 () {
+        // Validate that appropiate error message displayed
+    void LoginTC_3() {
         driver.get("https://www.saucedemo.com/");
 
 
@@ -74,18 +73,17 @@ public class Main {
         logloc.Password().sendKeys("qwey");
         logloc.button().click();
         WebElement getMsg = driver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/div/div/form/div[3]/h3"));
-        String ErrorMsg = "Epic sadface: Username and password do not match any user in this service" ;
+        String ErrorMsg = "Epic sadface: Username and password do not match any user in this service";
         String Actual = getMsg.getText();
 
-        Assert.assertEquals(Actual,ErrorMsg);
-
+        Assert.assertEquals(Actual, ErrorMsg);
 
 
     }
 
     @Test
-    //add product to cart and verify that cart is updated
-    void CartTC_1() throws InterruptedException {
+        //add product to cart and verify that cart is updated
+    void CartTC_addproduct() throws InterruptedException {
 
         driver.get("https://www.saucedemo.com/");
 
@@ -103,9 +101,8 @@ public class Main {
         Assert.assertTrue(driver.findElement(By.id("item_1_title_link")).isDisplayed());
 
 
-
-
     }
+
     @Test
     void CartTC_2() throws InterruptedException {
 
@@ -125,7 +122,7 @@ public class Main {
     }
 
     @Test
-    void CartTC_3 () {
+    void CartTC_3() {
 
         driver.get("https://www.saucedemo.com/");
 
@@ -134,20 +131,21 @@ public class Main {
         logloc.button().click();
         driver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
         cartloc.cartCount();
-            String count = "1";
+        String count = "1";
         String actualCount = cartloc.cartCount().getText();
-        Assert.assertEquals(actualCount,count);
+        Assert.assertEquals(actualCount, count);
         driver.findElement(By.id("add-to-cart-sauce-labs-bolt-t-shirt")).click();
         cartloc.cartCount();
-        String count2= "2";
-         actualCount = cartloc.cartCount().getText();
+        String count2 = "2";
+        actualCount = cartloc.cartCount().getText();
 
-        Assert.assertEquals(actualCount,count2);
+        Assert.assertEquals(actualCount, count2);
 
 
     }
+
     @Test
-    void CartTC_4(){
+    void CartTC_4() {
 
         driver.get("https://www.saucedemo.com/");
 
@@ -157,30 +155,59 @@ public class Main {
         cartloc.addCart().click();
         String actualCount;
 
-        for ( int i = 1; i <4 ; i++) {
+        for (int i = 1; i < 4; i++) {
             cartloc.cartCount();
 
-             actualCount = cartloc.cartCount().getText();
+            actualCount = cartloc.cartCount().getText();
             int q = Integer.parseInt(actualCount);
 
-            Assert.assertEquals(q,i);
+            Assert.assertEquals(q, i);
 
             cartloc.addCart().click();
-            System.out.println("Round no :"+i);
+            System.out.println("Round no :" + i);
 
         }
 
 
     }
-    @Test
-    void prodTC_3 () {
 
-        prodloc.getProduct();
+    @Test
+    void prodTC_VerifyProducts() {
+
+        driver.get("https://www.saucedemo.com/");
+
+        logloc.username().sendKeys("standard_user");
+        logloc.Password().sendKeys("secret_sauce");
+        logloc.button().click();
+        prodloc.verifyProducts();
 
 
     }
+
     @Test
-    void logoutTC_1 () {
+    void productTC_SortLowToHigh(){
+
+        driver.get("https://www.saucedemo.com/");
+
+        logloc.username().sendKeys("standard_user");
+        logloc.Password().sendKeys("secret_sauce");
+        logloc.button().click();
+        prodloc.sort();
+    }
+
+    @Test
+    void productTC_SortHighToLow(){
+        driver.get("https://www.saucedemo.com/");
+
+        logloc.username().sendKeys("standard_user");
+        logloc.Password().sendKeys("secret_sauce");
+        logloc.button().click();
+        prodloc.sortDesc();
+
+    }
+
+    @Test
+    void logoutTC_1() {
         driver.get("https://www.saucedemo.com/");
 
         logloc.username().sendKeys("standard_user");
